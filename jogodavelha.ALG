@@ -1,6 +1,5 @@
 Algoritmo "JogodaVelha"
-// Disciplina   : [Linguagem e Lógica de Programação]
-// Professor   : Antonio Carlos Nicolodi
+
 Var
    C, Linha, Coluna, Cont, ValInicial: Inteiro
    Tabuleiro: Vetor[1..3, 1..3] de Caractere
