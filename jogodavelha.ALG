@@ -1,6 +1,5 @@
 Algoritmo "JogodaVelha"
-// Disciplina   : [Linguagem e Lógica de Programação]
-// Professor   : Antonio Carlos Nicolodi
+
 Var
    C, Linha, Coluna, Cont, NovoValor, PosicaoAtualTabuleiro: Inteiro
    Tabuleiro: Vetor[1..3, 1..3] de Caractere
@@ -106,8 +105,14 @@ FimProcedimento
 
 Inicio
    InicializaTabuleiro()
+<<<<<<< HEAD
    MostrarTabuleiro()
    PularUmaLinha()
    Jogar()
 
 Fimalgoritmo
+=======
+   DesenhaEstrutura()
+   Escreval ("Vai jogar [x] em qual posicao? ")
+Fimalgoritmo
+>>>>>>> 8ea4e4fba20804fcc39967167c48d704e36c70da
