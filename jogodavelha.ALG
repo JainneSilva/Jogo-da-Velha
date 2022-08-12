@@ -2,8 +2,9 @@ Algoritmo "JogodaVelha"
 // Disciplina   : [Linguagem e Lógica de Programação]
 // Professor   : Antonio Carlos Nicolodi
 Var
-   C, Linha, Coluna, Cont, ValInicial: Inteiro
+   C, Linha, Coluna, Cont, NovoValor, PosicaoAtualTabuleiro: Inteiro
    Tabuleiro: Vetor[1..3, 1..3] de Caractere
+   Jogada, Posicao: Inteiro
 
 Procedimento DesenhaCruzETraco()
 Inicio
@@ -20,18 +21,18 @@ Procedimento InicializaTabuleiro()
 Inicio
    Para Linha <- 1 ate 3 faca
       Para Coluna <- 1 ate 3 faca
-         ValInicial <- 0
+         NovoValor <- 0
          Se (Linha > 1) entao
-            ValInicial <- Caracpnum (Tabuleiro [Linha - 1, 3]) + Coluna
+            NovoValor <- Caracpnum (Tabuleiro [Linha - 1, 3]) + Coluna
          Senao
-              ValInicial <- Coluna
+            NovoValor <- Coluna
          FimSe
-         Tabuleiro [Linha, Coluna] <- Numpcarac (ValInicial)
+         Tabuleiro [Linha, Coluna] <- Numpcarac (NovoValor)
       FimPara
    FimPara
 FimProcedimento
 
-Procedimento DesenhaEstrutura()
+Procedimento MostrarTabuleiro()
 Inicio
    Para Linha <- 1 ate 3 faca
       DesenhaCruzETraco()
@@ -61,9 +62,52 @@ Inicio
 FimProcedimento
 
 
+Procedimento AtualizaTabuleiro (Posicao:Inteiro; Char:Caractere)
+Inicio
+   PosicaoAtualTabuleiro <- 0
+   Para Linha <- 1 ate 3 faca
+      NovoValor <- PosicaoAtualTabuleiro
+      Para Coluna <- 1 ate 3 faca
+         Se (Linha > 1) entao
+            PosicaoAtualTabuleiro <- NovoValor + Coluna
+         Senao
+            PosicaoAtualTabuleiro <- Coluna
+         Fimse
+         Se (PosicaoAtualTabuleiro = Posicao) entao
+            Tabuleiro [Linha, Coluna] <- Char
+         FimSe
+      FimPara
+   FimPara
+FimProcedimento
+
+Procedimento PularUmaLinha()
+Inicio
+   Escreval()
+FimProcedimento
+
+Procedimento Jogar()
+Inicio
+   Para Jogada <- 1 ate 7 faca
+      Se (Jogada%2 = 0) entao
+         Escreval ("Quer jogar [x] em qual posicao? ")
+         Leia (Posicao)
+         AtualizaTabuleiro(Posicao, "x")
+         Limpatela()
+         MostrarTabuleiro()
+      Senao
+         Escreval ("Quer jogar [0] em qual posicao? ")
+         Leia (Posicao)
+         AtualizaTabuleiro (Posicao, "0")
+         Limpatela()
+         MostrarTabuleiro()
+      FimSe
+   FimPara
+FimProcedimento
 
 Inicio
    InicializaTabuleiro()
-   DesenhaEstrutura()
-   Escreval ("Vai jogar [x] em qual posicao? ")
+   MostrarTabuleiro()
+   PularUmaLinha()
+   Jogar()
+
 Fimalgoritmo
