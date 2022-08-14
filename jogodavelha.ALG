@@ -3,8 +3,9 @@ Algoritmo "JogodaVelha"
 Var
    C, Linha, Coluna, Cont, NovoValor, PosicaoAtualTabuleiro: Inteiro
    Tabuleiro: Vetor[1..3, 1..3] de Caractere
-   Jogada, Posicao: Inteiro
+   Jogada, Posicao, DimensaoDaMatriz: Inteiro
    PosicaoValida: Logico
+   Xis, Bola: Caractere
 
 Procedimento DesenhaCruzETraco()
 Inicio
@@ -19,11 +20,11 @@ FimProcedimento
 
 Procedimento InicializaTabuleiro()
 Inicio
-   Para Linha <- 1 ate 3 faca
-      Para Coluna <- 1 ate 3 faca
+   Para Linha <- 1 ate DimensaoDaMatriz faca
+      Para Coluna <- 1 ate DimensaoDaMatriz faca
          NovoValor <- 0
          Se (Linha > 1) entao
-            NovoValor <- Caracpnum (Tabuleiro [Linha - 1, 3]) + Coluna
+            NovoValor <- Caracpnum (Tabuleiro [Linha - 1, DimensaoDaMatriz]) + Coluna
          Senao
             NovoValor <- Coluna
          FimSe
@@ -34,14 +35,14 @@ FimProcedimento
 
 Procedimento MostrarTabuleiro()
 Inicio
-   Para Linha <- 1 ate 3 faca
+   Para Linha <- 1 ate DimensaoDaMatriz faca
       DesenhaCruzETraco()
       Escreval ("")
-      Para Coluna <- 1 ate 3 faca
+      Para Coluna <- 1 ate DimensaoDaMatriz faca
          Escreva ("| ", Tabuleiro [Linha, Coluna], " ")
       FimPara
       Escreval ("|")
-      Se (Linha = 3) entao
+      Se (Linha = DimensaoDaMatriz) entao
          DesenhaCruzETraco()
       FimSe
    FimPara
@@ -50,7 +51,7 @@ Inicio
 
    Cont <- Cont + 1
 
-   Se (Cont = 3) entao
+   Se (Cont = DimensaoDaMatriz) entao
       Para  C <- 0 ate 12 faca
          Se (C%4 = 0) entao
             Escreva ("+")
@@ -65,16 +66,16 @@ FimProcedimento
 Funcao AtualizaTabuleiro (Posicao:Inteiro; Char:Caractere): Logico
 Inicio
    PosicaoAtualTabuleiro <- 0
-   Para Linha <- 1 ate 3 faca
+   Para Linha <- 1 ate DimensaoDaMatriz faca
       NovoValor <- PosicaoAtualTabuleiro
-      Para Coluna <- 1 ate 3 faca
+      Para Coluna <- 1 ate DimensaoDaMatriz faca
          Se (Linha > 1) entao
             PosicaoAtualTabuleiro <- NovoValor + Coluna
          Senao
             PosicaoAtualTabuleiro <- Coluna
          Fimse
          Se (PosicaoAtualTabuleiro = Posicao) entao
-            Se (Tabuleiro [Linha, Coluna] <> "x") E (Tabuleiro[Linha,Coluna] <> "0") entao
+            Se (Tabuleiro [Linha, Coluna] <> Xis) E (Tabuleiro[Linha,Coluna] <> Bola) entao
                Tabuleiro [Linha, Coluna] <- Char
                Retorne Verdadeiro
             Senao
@@ -84,12 +85,6 @@ Inicio
       FimPara
    FimPara
 FimFuncao
-
-Procedimento PularUmaLinha()
-Inicio
-   Escreval()
-FimProcedimento
-
 
 Procedimento InsereNoTabuleiro(Char:Caractere)
 Inicio
@@ -106,15 +101,25 @@ Inicio
    MostrarTabuleiro()
 FimProcedimento
 
+Procedimento InicializarJogo()
+Inicio
+   DimensaoDaMatriz <- 3
+   Xis <- "X"
+   Bola <- "O"
+
+   InicializaTabuleiro()
+   MostrarTabuleiro()
+   PularUmaLinha()
+FimProcedimento
 
 Procedimento Jogar()
 Inicio
    Jogada <- 1
    Enquanto ((Nao ExisteGanhador()) E (Jogada <= 7)) faca
       Se (Jogada%2 = 0) entao
-         InsereNoTabuleiro("x")
+         InsereNoTabuleiro(Xis)
       Senao
-         InsereNoTabuleiro("0")
+         InsereNoTabuleiro(Bola)
       FimSe
       Jogada <- Jogada + 1
    FimEnquanto
@@ -127,12 +132,29 @@ FimFuncao
 
 Funcao ExisteGanhador(): Logico
 Inicio
-   Retorne JaExistePosicaoVencedora("x") Ou JaExistePosicaoVencedora("0")
+   Retorne JaExistePosicaoVencedora(Xis) Ou JaExistePosicaoVencedora(Bola)
 FimFuncao
 
+Procedimento MostrarResultado()
 Inicio
-   InicializaTabuleiro()
-   MostrarTabuleiro()
    PularUmaLinha()
+   Se (JaExistePosicaoVencedora (Xis)) entao
+      Escreval ("Parabens, O Jogador com ", Xis, " foi o ganhador! :)")
+   FimSe
+   Se (JaExistePosicaoVencedora (Bola)) entao
+      Escreval ("Parabens, O Jogador com ", Bola, " foi o ganhador! :)")
+   Senao
+      Escreval ("Deu Velha :(")
+   FimSe
+FimProcedimento
+
+Procedimento PularUmaLinha()
+Inicio
+   Escreval()
+FimProcedimento
+
+Inicio
+   InicializarJogo()
    Jogar()
+   MostrarResultado()
 Fimalgoritmo
