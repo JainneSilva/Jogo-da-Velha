@@ -4,6 +4,7 @@ Var
    C, Linha, Coluna, Cont, NovoValor, PosicaoAtualTabuleiro: Inteiro
    Tabuleiro: Vetor[1..3, 1..3] de Caractere
    Jogada, Posicao: Inteiro
+   PosicaoValida: Logico
 
 Procedimento DesenhaCruzETraco()
 Inicio
@@ -61,7 +62,7 @@ Inicio
 FimProcedimento
 
 
-Procedimento AtualizaTabuleiro (Posicao:Inteiro; Char:Caractere)
+Funcao AtualizaTabuleiro (Posicao:Inteiro; Char:Caractere): Logico
 Inicio
    PosicaoAtualTabuleiro <- 0
    Para Linha <- 1 ate 3 faca
@@ -73,46 +74,65 @@ Inicio
             PosicaoAtualTabuleiro <- Coluna
          Fimse
          Se (PosicaoAtualTabuleiro = Posicao) entao
-            Tabuleiro [Linha, Coluna] <- Char
+            Se (Tabuleiro [Linha, Coluna] <> "x") E (Tabuleiro[Linha,Coluna] <> "0") entao
+               Tabuleiro [Linha, Coluna] <- Char
+               Retorne Verdadeiro
+            Senao
+               Retorne Falso
+            FimSe
          FimSe
       FimPara
    FimPara
-FimProcedimento
+FimFuncao
 
 Procedimento PularUmaLinha()
 Inicio
    Escreval()
 FimProcedimento
 
+
+Procedimento InsereNoTabuleiro(Char:Caractere)
+Inicio
+   Escreval ("Quer jogar [",Char,"] em qual posicao? ")
+   Leia (Posicao)
+   PosicaoValida <- AtualizaTabuleiro(Posicao, Char)
+   Enquanto (Nao PosicaoValida) faca
+      Escreval ("Posicao Invalida")
+      Escreval ("Quer jogar [",Char,"] em qual posicao? ")
+      Leia (Posicao)
+      PosicaoValida <- AtualizaTabuleiro (Posicao, Char)
+   FimEnquanto
+   Limpatela()
+   MostrarTabuleiro()
+FimProcedimento
+
+
 Procedimento Jogar()
 Inicio
-   Para Jogada <- 1 ate 7 faca
+   Jogada <- 1
+   Enquanto ((Nao ExisteGanhador()) E (Jogada <= 7)) faca
       Se (Jogada%2 = 0) entao
-         Escreval ("Quer jogar [x] em qual posicao? ")
-         Leia (Posicao)
-         AtualizaTabuleiro(Posicao, "x")
-         Limpatela()
-         MostrarTabuleiro()
+         InsereNoTabuleiro("x")
       Senao
-         Escreval ("Quer jogar [0] em qual posicao? ")
-         Leia (Posicao)
-         AtualizaTabuleiro (Posicao, "0")
-         Limpatela()
-         MostrarTabuleiro()
+         InsereNoTabuleiro("0")
       FimSe
-   FimPara
+      Jogada <- Jogada + 1
+   FimEnquanto
 FimProcedimento
+
+Funcao JaExistePosicaoVencedora(Char: Caractere): Logico
+Inicio
+   Retorne (Tabuleiro[1,1] = Char) E (Tabuleiro[1,2] = Char) E (Tabuleiro[1 ,3] = Char) Ou (Tabuleiro[2,1] = Char) E (Tabuleiro[2,2] = Char) E (Tabuleiro[2,3] = Char) Ou(Tabuleiro[3,1] = Char) E (Tabuleiro[3,2] = Char) E (Tabuleiro[3,3] = Char) Ou (Tabuleiro[1,1] = Char) E (Tabuleiro[2,1] = Char) E (Tabuleiro[3,1] = Char) Ou(Tabuleiro[1,2] = Char) E (Tabuleiro[2,2] = Char) E (Tabuleiro[3,2] = Char) Ou (Tabuleiro[1,3] = Char) E (Tabuleiro[2,3] = Char) E (Tabuleiro[3,3] = Char) Ou (Tabuleiro[1,3] = Char) E (Tabuleiro[2,2] = Char) E (Tabuleiro[3,1] = Char) Ou (Tabuleiro[1,1] = Char) E (Tabuleiro[2,2] = Char) E (Tabuleiro[3,3] = Char)
+FimFuncao
+
+Funcao ExisteGanhador(): Logico
+Inicio
+   Retorne JaExistePosicaoVencedora("x") Ou JaExistePosicaoVencedora("0")
+FimFuncao
 
 Inicio
    InicializaTabuleiro()
-<<<<<<< HEAD
    MostrarTabuleiro()
    PularUmaLinha()
    Jogar()
-
 Fimalgoritmo
-=======
-   DesenhaEstrutura()
-   Escreval ("Vai jogar [x] em qual posicao? ")
-Fimalgoritmo
->>>>>>> 8ea4e4fba20804fcc39967167c48d704e36c70da
